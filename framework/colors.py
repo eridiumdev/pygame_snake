@@ -1,2 +1,4 @@
 
+BLACK = (0, 0, 0)
 DARK_GREEN = (0, 45, 0)
+YELLOW = (200, 200, 30)

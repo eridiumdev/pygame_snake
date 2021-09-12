@@ -1,5 +1,4 @@
 import sys
-import time
 
 import pygame
 
@@ -21,9 +20,7 @@ class Game:
 
         # display.set_caption should precede display.set_mode
         self.display.set_caption(window.title)
-
         self.screen = self.display.set_mode((window.width, window.height), 0, 32)
-        self.render()
 
     def run(self):
         while True:
