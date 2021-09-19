@@ -1,17 +1,18 @@
 import framework.game
 import framework.window
 import game as _game
+import config
 
 
 def main():
     window = framework.window.Window(
-        title='Snek',
-        width=600,
-        height=400,
+        title=config.WINDOW_TITLE,
+        width=config.WINDOW_WIDTH,
+        height=config.WINDOW_HEIGHT,
     )
     game = _game.Game(
         window=window,
-        fps=60,
+        fps=config.GAME_FPS,
     )
     game.run()
 

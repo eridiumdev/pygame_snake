@@ -12,6 +12,9 @@ class Game:
             fps: int
     ):
         pygame.init()
+        # Catch KEY_PRESS events every 50 ms
+        # (10ms = delay before first catch)
+        # pygame.key.set_repeat(10, 50)
 
         self.win = window
         self.fps = fps
@@ -30,6 +33,8 @@ class Game:
                 else:
                     self.handle_event(event)
 
+            self.handle_keys_pressed(pygame.key.get_pressed())
+
             self.render()
             self.clock.tick(self.fps)
 
@@ -37,6 +42,9 @@ class Game:
         self.display.update()
 
     def handle_event(self, event: pygame.event.Event):
+        pass
+
+    def handle_keys_pressed(self, keys_pressed):
         pass
 
     @staticmethod
