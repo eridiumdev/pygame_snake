@@ -7,7 +7,7 @@ import entities.grid
 import entities.snake
 import entities.food
 import entities.food_spawner
-import events.snake_head_hits_food
+import events.snake
 import config
 
 
@@ -35,13 +35,20 @@ class Game(framework.escapable.ExitOnEscape, framework.game.Game):
         super().render()
 
         # Handle game logic
-        if self.snake.clock.has_ticked():
+        if self.snake.is_moving and self.snake.clock.has_ticked():
             config.DEBUG and print("============= STARTING NEXT CYCLE =============")
             self.snake.digest_food()
             self.snake.move()
+            # Check snake hits itself
+            for chunk in self.snake.chunks:
+                if chunk.is_head:
+                    continue
+                if self.grid.snake_head_overlaps_with_chunk(self.snake.get_head(), chunk):
+                    self.post_event(events.snake.SnakeHeadHitsBody(chunk))
+            # Check snake hits food
             for food in self.foods:
                 if self.grid.food_overlaps_with_snakes_head(self.snake.get_head(), food):
-                    self.post_event(events.snake_head_hits_food.SnakeHeadHitsFood(food))
+                    self.post_event(events.snake.SnakeHeadHitsFood(food))
 
         # Handle drawing on screen
         self.screen.fill(config.GAME_BACKGROUND_COLOR)
@@ -82,7 +89,12 @@ class Game(framework.escapable.ExitOnEscape, framework.game.Game):
 
     def handle_user_event(self, event: pygame.event.Event):
         config.DEBUG and print("User event caught: {0}, payload: {1}".format(event.name, event.payload))
-        if event.type == constants.EVENT_SNAKE_HEAD_HITS_FOOD:
+
+        if event.type == constants.EVENT_SNAKE_HEAD_HITS_BODY:
+            event.payload['chunk'].is_hit = True
+            self.snake.stop_moving()
+
+        elif event.type == constants.EVENT_SNAKE_HEAD_HITS_FOOD:
             self.snake.get_head().digesting_food_counter += 1
             self.foods.remove(event.payload['food'])
             self.foods.append(self.food_spawner.spawn_food())

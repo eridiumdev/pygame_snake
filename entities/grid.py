@@ -41,16 +41,24 @@ class Grid:
                                        (food.rect.x, food.rect.y),
                                        (chunk.border.rect.x, chunk.border.rect.y)))
                 return True
-        # config.DEBUG and print("Food does not overlap with snake")
         return False
 
-    def food_overlaps_with_snakes_head(self, snake_head: entities.snake_chunk.SnakeChunk, food: entities.food.Food) -> bool:
+    def food_overlaps_with_snakes_head(self, snake_head: entities.snake_chunk.SnakeChunk,
+                                       food: entities.food.Food) -> bool:
         if food.rect.clip(snake_head.border.rect):
             config.DEBUG and print("Food overlaps with snake head ({0} clips {1})".format(
                                    (food.rect.x, food.rect.y),
                                    (snake_head.border.rect.x, snake_head.border.rect.y)))
             return True
-        # config.DEBUG and print("Food does not overlap with snake head")
+        return False
+
+    def snake_head_overlaps_with_chunk(self, snake_head: entities.snake_chunk.SnakeChunk,
+                                       chunk: entities.snake_chunk.SnakeChunk) -> bool:
+        if snake_head.border.rect.clip(chunk.border.rect):
+            config.DEBUG and print("Snake head overlaps with chunk ({0} clips {1})".format(
+                (snake_head.border.rect.x, snake_head.border.rect.y),
+                (chunk.border.rect.x, chunk.border.rect.y)))
+            return True
         return False
 
     def _adjust_x(self, x):

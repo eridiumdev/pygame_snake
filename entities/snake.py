@@ -19,6 +19,10 @@ class Snake(renderable.Renderable):
         self.add_head(start_x, start_y)
         for i in range(config.SNAKE_STARTING_CHUNKS - 1):
             self.add_tail()
+        self.is_moving = True
+
+    def stop_moving(self):
+        self.is_moving = False
 
     def add_head(self, start_x, start_y):
         new_head = _chunk.SnakeChunk(start_x, start_y, self.chunk_width, self.chunk_height, self.direction)

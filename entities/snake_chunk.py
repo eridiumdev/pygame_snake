@@ -9,6 +9,7 @@ import config
 class SnakeChunk(renderable.Renderable, bordered_rect.Scalable):
     is_head = False
     is_tail = False
+    is_hit = False
     hidden_cycles_counter = 0
     digesting_food_counter = 0
 
@@ -76,15 +77,13 @@ class SnakeChunk(renderable.Renderable, bordered_rect.Scalable):
             # Skip rendering in case chunk is hidden
             return
 
-        if self.is_digesting_food():
-            self.border.paint(config.SNAKE_DIGESTING_FOOD_BORDER_COLOR)
-            self.body.paint(config.SNAKE_DIGESTING_FOOD_BODY_COLOR)
+        if self.is_hit:
+            self.body.paint(config.SNAKE_HIT_COLOR)
+        elif self.is_digesting_food():
+            self.body.paint(config.SNAKE_DIGESTING_FOOD_COLOR)
         elif self.is_head:
-            self.border.paint(config.SNAKE_HEAD_BORDER_COLOR)
-            self.body.paint(config.SNAKE_HEAD_BODY_COLOR)
+            self.body.paint(config.SNAKE_HEAD_COLOR)
         else:
-            self.border.paint(config.SNAKE_BORDER_COLOR)
-            self.body.paint(config.SNAKE_BODY_COLOR)
+            self.body.paint(config.SNAKE_COLOR)
 
-        # self.border.render(screen)
         self.body.render(screen)
